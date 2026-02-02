@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   const form = useTemplateRef('form')
-  const { isFetch, send, data: serverData } = useLazyFetching('/api/form')
+  const { isFetch, send, error, data: serverData } = useLazyFetching('/api/form')
   const noticeShow = ref<number | null>(null)
 
   const { errors, validate } = useValidate(form, {
@@ -17,8 +17,11 @@
     const { data, isSuccess } = validate()
 
     if (isSuccess.value) {
-      await send({ method: 'POST', body: JSON.stringify(data.value) })
-      noticeShow.value = setTimeout(() => (noticeShow.value = null), 3000)
+      const { error } = await send({ method: 'POST', body: JSON.stringify(data.value) })
+
+      if (!error.value) {
+        noticeShow.value = setTimeout(() => (noticeShow.value = null), 3000)
+      }
     }
   }
 </script>
@@ -26,6 +29,7 @@
 <template>
   <form @submit.prevent="onSubmit" class="form" ref="form">
     <div v-if="noticeShow">Получены поля: {{ serverData.data }}</div>
+    <div v-if="error">{{ error }}</div>
 
     <div>
       <input class="form-field" name="inputName" />
