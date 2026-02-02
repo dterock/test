@@ -10,6 +10,7 @@ export function useLazyFetching(url: RequestInfo | URL) {
   const isSuccess = ref(false)
 
   async function send(opts?: RequestInit) {
+    isSuccess.value = false
     error.value = undefined
     data.value = {}
 
