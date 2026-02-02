@@ -17,7 +17,7 @@
     const { data, isSuccess } = validate()
 
     if (isSuccess.value) {
-      const { error } = await send({ method: 'POST', body: JSON.stringify(data.value) })
+      await send({ method: 'POST', body: JSON.stringify(data.value) })
 
       if (!error.value) {
         noticeShow.value = setTimeout(() => (noticeShow.value = null), 3000)

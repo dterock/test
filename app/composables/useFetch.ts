@@ -1,5 +1,5 @@
 export async function useFetching(url: RequestInfo | URL, opts?: RequestInit) {
-  return await useLazyFetching(url).send(opts)
+  return useLazyFetching(url).send(opts)
 }
 
 export function useLazyFetching(url: RequestInfo | URL) {
